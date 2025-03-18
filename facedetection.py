@@ -18,9 +18,29 @@ while True:
         minSize=(30,30),
         flags=cv2.CASCADE_SCALE_IMAGE
     )
-    # draw rectangle on detected faces
-    for (x,y,w,h) in faces:
-        cv2.rectangle(video_data,(x,y),(x+w,y+h),(0,255,0),2)
+    # draw rectangle L-shaped on detected faces
+     
+    for (x, y, w, h) in faces:
+        thickness = 2
+        color = (0, 255, 0)  
+        corner_length = int(w * 0.2)  # 20% of width
+
+        # Top-left corner
+        cv2.line(video_data, (x, y), (x + corner_length, y), color, thickness)
+        cv2.line(video_data, (x, y), (x, y + corner_length), color, thickness)
+
+        # Top-right corner
+        cv2.line(video_data, (x + w, y), (x + w - corner_length, y), color, thickness)
+        cv2.line(video_data, (x + w, y), (x + w, y + corner_length), color, thickness)
+
+        # Bottom-left corner
+        cv2.line(video_data, (x, y + h), (x, y + h - corner_length), color, thickness)
+        cv2.line(video_data, (x, y + h), (x + corner_length, y + h), color, thickness)
+
+        # Bottom-right corner
+        cv2.line(video_data, (x + w, y + h), (x + w - corner_length, y + h), color, thickness)
+        cv2.line(video_data, (x + w, y + h), (x + w, y + h - corner_length), color, thickness)
+
     cv2.imshow("Live_Camera",video_data)
 # opened camera while we press "space" key 
     if cv2.waitKey(10) == ord(" "):
